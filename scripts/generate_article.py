@@ -177,6 +177,14 @@ def generate_article(genre_name, genre_data, keyword, perspective):
 「専門家として教える」のではなく「同じ悩みを持つ人のために調べた内容を共有する」というスタンスで、
 読者に本当に役立つ高品質なブログ記事を書いてください。
 
+このブログの一番大事な目的は、アフィリエイト収益そのものではなく、
+「同じお金の悩みを抱える読者に、本当に寄り添って、少しでも安心してもらうこと」です。
+そのために、以下のトーンを必ず意識してください。
+- 読者を見下したり、教科書的に正論を押し付けたりしない。「隣で一緒に悩んでくれる友人」のような距離感で書く
+- 読者の失敗や不安を茶化さず、まず「そう思うのは当然ですよ」と受け止めてから話を進める
+- 記事のどこかに、思わずクスッと笑えるような、リアルであるあるなユーモア（例えば運営者自身の失敗談・あるあるな本音のツッコミなど）を最低1箇所は自然に入れる。ただし悩みの深刻さを軽視するようなブラックユーモアや皮肉にはしない
+- 「アフィリエイト商品を売るための記事」ではなく「読者の悩みを解決した結果、たまたま役立つサービスを紹介する記事」という順序を守る
+
 ## 記事条件
 - **ジャンル**: {genre_name}
 - **メインキーワード（検索意図）**: {keyword}
@@ -210,6 +218,7 @@ WordPress投稿用のHTML形式で出力してください。
 - 保険・金融は「専門家への相談をおすすめします」を明記
 - 読者の立場に寄り添い、押し付けがましくない自然なアフィリエイト誘導
 - 運営者自身を「専門家」「FP」「監修者」など専門資格保有者であるかのように名乗らせない。あくまで「自分で調べた一個人」というトーンを保つ
+- 記事全体を通して「読者を大事にする気持ち」が伝わる文章にすること。テンプレ的な明るさではなく、悩みに真摯に向き合った上でのユーモアであること
 """
 
     message = client.messages.create(
@@ -229,17 +238,39 @@ AUTHOR_DISCLAIMER_HTML = """
 </div>
 """
 
+# 転職・就職カテゴリ専用CTA（2026-07-27 もしもアフィリエイトで提携した、
+# 実際に転職・就職支援を行うサービスへの導線。内容と無関係な金融相談CTAではなく、
+# 読者の悩み（転職・就活）に直接応えるサービスを紹介する）
+CAREER_CTA_HTML = """
+<div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:16px 20px;margin:28px 0;">
+<p style="margin:0 0 10px 0;font-weight:bold;">一人で抱え込まず、プロに話を聞いてもらうという選択肢</p>
+<p style="margin:0 0 10px 0;">転職や就活の悩みは、誰かに話すだけで整理できることもあります。どちらも無料相談なので、「まだ転職するか決めていない」という段階でも気軽に利用できます。</p>
+<p style="margin:0 0 6px 0;">▶ <a href="//af.moshimo.com/af/c/click?a_id=5716939&p_id=5870&pc_id=16301&pl_id=75201&url=https%3A%2F%2Fremoful.com%2Fmoshimo" rel="nofollow" referrerpolicy="no-referrer-when-downgrade">Remoful（リモフル）でキャリア相談する</a></p>
+<p style="margin:0;">▶ <a href="//af.moshimo.com/af/c/click?a_id=5716940&p_id=7239&pc_id=20766&pl_id=91222" rel="nofollow" referrerpolicy="no-referrer-when-downgrade">サクキャリマッチで無料面談を申し込む</a></p>
+<img src="//i.moshimo.com/af/i/impression?a_id=5716939&p_id=5870&pc_id=16301&pl_id=75201" width="1" height="1" style="border:none;" loading="lazy">
+<img src="//i.moshimo.com/af/i/impression?a_id=5716940&p_id=7239&pc_id=20766&pl_id=91222" width="1" height="1" style="border:none;" loading="lazy">
+</div>
+"""
 
-def _append_author_disclaimer(article_content: str) -> str:
-    """<article>タグ内の末尾（</article>直前）に運営者情報リンクを挿入する"""
+# CAREER_CTA_HTML を挿入する対象ジャンル
+CAREER_CTA_GENRES = {"転職", "就職"}
+
+
+def _append_author_disclaimer(article_content: str, genre_name: str = None) -> str:
+    """<article>タグ内の末尾（</article>直前）に運営者情報リンク（と該当ジャンルならCTA）を挿入する"""
+    insertion = ""
+    if genre_name in CAREER_CTA_GENRES:
+        insertion += CAREER_CTA_HTML
+    insertion += AUTHOR_DISCLAIMER_HTML
+
     if "</article>" in article_content:
-        return article_content.replace("</article>", AUTHOR_DISCLAIMER_HTML + "</article>", 1)
-    return article_content + AUTHOR_DISCLAIMER_HTML
+        return article_content.replace("</article>", insertion + "</article>", 1)
+    return article_content + insertion
 
 
 def save_article(article_content, genre_name, keyword, perspective):
     """記事をファイルに保存（人間レビュー用）"""
-    article_content = _append_author_disclaimer(article_content)
+    article_content = _append_author_disclaimer(article_content, genre_name)
 
     today = datetime.date.today().strftime("%Y-%m-%d")
     filename = f"draft_{today}_{genre_name}.html"
