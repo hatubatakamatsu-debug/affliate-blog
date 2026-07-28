@@ -246,9 +246,11 @@ CAREER_CTA_HTML = """
 <p style="margin:0 0 10px 0;font-weight:bold;">一人で抱え込まず、プロに話を聞いてもらうという選択肢</p>
 <p style="margin:0 0 10px 0;">転職や就活の悩みは、誰かに話すだけで整理できることもあります。どちらも無料相談なので、「まだ転職するか決めていない」という段階でも気軽に利用できます。</p>
 <p style="margin:0 0 6px 0;">▶ <a href="//af.moshimo.com/af/c/click?a_id=5716939&p_id=5870&pc_id=16301&pl_id=75201&url=https%3A%2F%2Fremoful.com%2Fmoshimo" rel="nofollow" referrerpolicy="no-referrer-when-downgrade">Remoful（リモフル）でキャリア相談する</a></p>
-<p style="margin:0;">▶ <a href="//af.moshimo.com/af/c/click?a_id=5716940&p_id=7239&pc_id=20766&pl_id=91222" rel="nofollow" referrerpolicy="no-referrer-when-downgrade">サクキャリマッチで無料面談を申し込む</a></p>
+<p style="margin:0 0 6px 0;">▶ <a href="//af.moshimo.com/af/c/click?a_id=5716940&p_id=7239&pc_id=20766&pl_id=91222" rel="nofollow" referrerpolicy="no-referrer-when-downgrade">サクキャリマッチで無料面談を申し込む</a></p>
+<p style="margin:0;">▶ <a href="//af.moshimo.com/af/c/click?a_id=5716942&p_id=7382&pc_id=21253&pl_id=92850" rel="nofollow" referrerpolicy="no-referrer-when-downgrade">キャリセン就活エージェントで無料相談する</a></p>
 <img src="//i.moshimo.com/af/i/impression?a_id=5716939&p_id=5870&pc_id=16301&pl_id=75201" width="1" height="1" style="border:none;" loading="lazy">
 <img src="//i.moshimo.com/af/i/impression?a_id=5716940&p_id=7239&pc_id=20766&pl_id=91222" width="1" height="1" style="border:none;" loading="lazy">
+<img src="//i.moshimo.com/af/i/impression?a_id=5716942&p_id=7382&pc_id=21253&pl_id=92850" width="1" height="1" style="border:none;" loading="lazy">
 </div>
 """
 
